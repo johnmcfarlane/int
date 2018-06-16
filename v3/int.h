@@ -94,8 +94,11 @@ public:
     template <typename Integral>
     constexpr wide_integer<Bits, Signed>& operator^=(const Integral& rhs) noexcept;
 
-    constexpr wide_integer<Bits, Signed>& operator<<=(int n);
-    constexpr wide_integer<Bits, Signed>& operator>>=(int n) noexcept;
+    template <typename Integral>
+    constexpr wide_integer<Bits, Signed>& operator<<=(Integral const& n);
+
+    template <typename Integral>
+    constexpr wide_integer<Bits, Signed>& operator>>=(Integral const& n) noexcept;
 
     constexpr wide_integer<Bits, Signed>& operator++() noexcept(is_same<Signed, unsigned>::value);
     constexpr wide_integer<Bits, Signed> operator++(int)noexcept(is_same<Signed, unsigned>::value);
@@ -191,11 +194,11 @@ std::common_type_t<wide_integer<Bits, Signed>, wide_integer<Bits2, Signed2>> con
 template <typename Integral, typename Integral2, class = __only_integer<Integral, Integral2>>
 std::common_type_t<Integral, Integral2> constexpr operator^(const Integral& rhs, const Integral2& lhs);
 
-// TODO: Integral
-template <size_t Bits, typename Signed>
-constexpr wide_integer<Bits, Signed> operator<<(const wide_integer<Bits, Signed>& lhs, int n) noexcept;
-template <size_t Bits, typename Signed>
-constexpr wide_integer<Bits, Signed> operator>>(const wide_integer<Bits, Signed>& lhs, int n) noexcept;
+template <size_t Bits, typename Signed, typename Integral>
+constexpr wide_integer<Bits, Signed> operator<<(const wide_integer<Bits, Signed>& lhs, Integral n) noexcept;
+
+template <size_t Bits, typename Signed, typename Integral>
+constexpr wide_integer<Bits, Signed> operator>>(const wide_integer<Bits, Signed>& lhs, Integral n) noexcept;
 
 template <size_t Bits, typename Signed, size_t Bits2, typename Signed2>
 constexpr bool operator<(const wide_integer<Bits, Signed>& lhs, const wide_integer<Bits2, Signed2>& rhs);
@@ -239,7 +242,7 @@ std::ostream& operator<<(std::ostream& out, const wide_integer<Bits, Signed>& n)
 template <size_t Bits, typename Signed>
 std::wostream& operator<<(std::wostream& out, const wide_integer<Bits, Signed>& n);
 
-template <size_t Bits, typename Signed>
+template <size_t Bits, typename Signed, typename Integral>
 std::istream& operator>>(std::istream& in, wide_integer<Bits, Signed>& n);
 
 template <size_t Bits, typename Signed>
